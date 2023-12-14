@@ -17,3 +17,24 @@
 .cache/
 
 *Results/*
+*Results*
+
+# Firmware files
+*.jou
+*.log
+*.str
+*.swp
+*.srcs/*
+*.srcs
+*.sim/*
+*.sim
+*.runs/*
+*.runs
+*.ip_user_files/*
+*.ip_user_files
+*.hw/*
+*.hw
+*.Xil/*
+*.Xil
+*.cache/*
+*.cache
