@@ -137,11 +137,11 @@ begin
     rst_usr_core     <= Reset_i or command_id.rst_usr_core;
     
     ADC_SCLK_o <= adc_sclk(0);
-    MUX_ADDR_o <= "000" when Cnfg_readout.mux_addr = "110" else -- Select MUX input 0 (SiPM_5)
-                  "001" when Cnfg_readout.mux_addr = "101" else -- Select MUX input 1 (SiPM_4)
-                  "010" when Cnfg_readout.mux_addr = "100" else -- Select MUX input 2 (SiPM_3)
-                  "011" when Cnfg_readout.mux_addr = "011" else -- Select MUX Input 3 (SiPM_2)
-                  "110" when Cnfg_readout.mux_addr = "101" else -- Select MUX input 6 (SiPM 1)
+    MUX_ADDR_o <= "110" when Cnfg_readout.mux_addr = "101" else -- Select MUX input 0 (SiPM_5)
+                  "101" when Cnfg_readout.mux_addr = "100" else -- Select MUX input 1 (SiPM_4)
+                  "100" when Cnfg_readout.mux_addr = "011" else -- Select MUX input 2 (SiPM_3)
+                  "011" when Cnfg_readout.mux_addr = "010" else -- Select MUX Input 3 (SiPM_2)
+                  "101" when Cnfg_readout.mux_addr = "001" else -- Select MUX input 6 (SiPM 1)
                   "111";                                        -- Select MUX Input 7 (SiPM 0)
 
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

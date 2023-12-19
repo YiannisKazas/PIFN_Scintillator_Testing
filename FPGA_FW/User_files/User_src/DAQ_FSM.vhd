@@ -82,18 +82,18 @@ architecture Behavioral of DAQ_FSM is
 begin
 
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    DEBUG_DAQ_FSM : DAQ_FSM_DEBUG
-    PORT MAP (
-        clk => clk_i,
-        probe0(0) => debug, 
-        probe1(0) => state, 
-        probe2(0) => adc_en,--trigger_i, 
-        probe3(0) => daq_en_int, 
-        probe4(0) => daq_en, 
-        probe5(0) => event_rst,--trigger_prev, 
-        probe6    => std_logic_vector(to_unsigned(daq_cntr,8)),
-        probe7    => cnfg_readout_i.integr_dur(7 downto 0)
-    );
+--    DEBUG_DAQ_FSM : DAQ_FSM_DEBUG
+--    PORT MAP (
+--        clk => clk_i,
+--        probe0(0) => debug, 
+--        probe1(0) => state, 
+--        probe2(0) => adc_en,--trigger_i, 
+--        probe3(0) => daq_en_int, 
+--        probe4(0) => daq_en, 
+--        probe5(0) => event_rst,--trigger_prev, 
+--        probe6    => std_logic_vector(to_unsigned(daq_cntr,8)),
+--        probe7    => cnfg_readout_i.integr_dur(7 downto 0)
+--    );
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     

@@ -33,7 +33,29 @@ architecture Behavioral of Cnfg_regs is
 
 --==================================================================================================
 
+COMPONENT DEBUG_CNFG_REGS
+
+PORT (
+	clk : IN STD_LOGIC;
+	probe0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe1 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+	probe2 : IN STD_LOGIC_VECTOR(7 DOWNTO 0)
+);
+END COMPONENT  ;
+
+
+
 begin
+
+CNFG_REGS_DEBUG : DEBUG_CNFG_REGS
+PORT MAP (
+	clk => clk_i,
+	probe0(0) => Ctrl_regs_i(8)(0), 
+	probe1 => Ctrl_regs_i(4),
+	probe2 => Ctrl_regs_i(5)
+);
+
+
 
 --==================================================================================================
 -- START OF MAIN BODY --
