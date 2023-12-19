@@ -42,7 +42,7 @@ architecture Behavioral of TX_Interface is
     -- Start of Signal Declaration --
 --==================================================================================================
 
-    signal TX_cntr     : integer range 0 to 12 := 0 ; -- Counter controlling transfer sequence
+    signal TX_cntr     : integer range 0 to 15 := 0 ; -- Counter controlling transfer sequence
 --    signal TX_cntr_rst : std_logic:= '1';
     signal TX_data     : adc_data_type :=(others=> (others =>'0'));
     
@@ -86,24 +86,24 @@ END COMPONENT  ;
     
 begin
 
-DEBUG_TX_INTERFACE : TX_INTERFACE_DEBUG
-PORT MAP (
-	clk => clk_i,
-	probe0(0) => daq_en_i, 
-	probe1(0) => debug_en_i, 
-	probe2(0) => hit_flag_i(0), 
-	probe3 => std_logic_vector(to_unsigned(tx_cntr,4)), 
-	probe4 => tx_data(0), 
-	probe5 => tx_data(1), 
-	probe6 => tx_data(2), 
-	probe7 => tx_data(3), 
-	probe8(0) => hit_flag_prev(0), 
-	probe9(0) => hit_flag_edge(0), 
-	probe10 => std_logic_vector(to_unsigned(debug_cntr,10)), 
-	probe11 => std_logic_vector(to_unsigned(wait_cntr,10)), 
-	probe12 => state,
-	probe13(0) => tx_done
-);
+--DEBUG_TX_INTERFACE : TX_INTERFACE_DEBUG
+--PORT MAP (
+--	clk => clk_i,
+--	probe0(0) => daq_en_i, 
+--	probe1(0) => debug_en_i, 
+--	probe2(0) => hit_flag_i(0), 
+--	probe3 => std_logic_vector(to_unsigned(tx_cntr,4)), 
+--	probe4 => tx_data(0), 
+--	probe5 => tx_data(1), 
+--	probe6 => tx_data(2), 
+--	probe7 => tx_data(3), 
+--	probe8(0) => hit_flag_prev(0), 
+--	probe9(0) => hit_flag_edge(0), 
+--	probe10 => std_logic_vector(to_unsigned(debug_cntr,10)), 
+--	probe11 => std_logic_vector(to_unsigned(wait_cntr,10)), 
+--	probe12 => state,
+--	probe13(0) => tx_done
+--);
 
 --==================================================================================================
     -- START OF MAIN BODY --
@@ -162,7 +162,7 @@ PORT MAP (
                 Error_o <= (others => '0');
                 
             elsif (DAQ_en_i = '1') then               -- If DAQ is in Run State
-                if (TX_cntr = 9) then                     -- Reset Counter after 9 clk cycles
+                if (TX_cntr = 15) then                     -- Reset Counter after 15 clk cycles
                     TX_cntr <= 0;  
                 elsif (or_reduce(Hit_flag_i) = '1') then   -- Increase counter if Hit flag is asserted
                     TX_cntr <= TX_cntr +1;
@@ -203,32 +203,50 @@ PORT MAP (
                 Clr_hit_flag_o <= '0';
                 FIFO_wr_en_o   <= '0';
                 FIFO_din_o     <= (others => '0');
-            when 1 => 
+            when 1 =>
                 FIFO_wr_en_o <= '0';
-                FIFO_din_o   <= TX_data(0);
-            when 2 => 
+                FIFO_din_o   <= x"FFFF";--TX_data(0);
+            when 2 =>
                 FIFO_wr_en_o <= '1';
-                FIFO_din_o   <= TX_data(0);
+                FIFO_din_o   <= x"FFFF";--TX_data(0);
             when 3 => 
                 FIFO_wr_en_o <= '0';
-                FIFO_din_o   <= TX_data(1);
+                FIFO_din_o   <= TX_data(0);
             when 4 => 
                 FIFO_wr_en_o <= '1';
-                FIFO_din_o   <= TX_data(1);
+                FIFO_din_o   <= TX_data(0);
             when 5 => 
                 FIFO_wr_en_o <= '0';
-                FIFO_din_o   <= TX_data(2);
+                FIFO_din_o   <= TX_data(1);
             when 6 => 
                 FIFO_wr_en_o <= '1';
-                FIFO_din_o   <= TX_data(2);
+                FIFO_din_o   <= TX_data(1);
             when 7 => 
                 FIFO_wr_en_o <= '0';
-                FIFO_din_o   <= TX_data(3);
+                FIFO_din_o   <= TX_data(2);
             when 8 => 
+                FIFO_wr_en_o <= '1';
+                FIFO_din_o   <= TX_data(2);
+            when 9 => 
+                FIFO_wr_en_o <= '0';
+                FIFO_din_o   <= TX_data(3);
+            when 10 => 
+                FIFO_wr_en_o <= '1';
+                FIFO_din_o   <= TX_data(3);
+            when 11 => 
+                FIFO_wr_en_o <= '0';
+                FIFO_din_o   <= TX_data(4);
+            when 12 => 
+                FIFO_wr_en_o <= '1';
+                FIFO_din_o   <= TX_data(4);
+            when 13 => 
+                FIFO_wr_en_o <= '0';
+                FIFO_din_o   <= TX_data(5);
+            when 14 => 
                 Clr_Hit_flag_o <= '1';
                 FIFO_wr_en_o   <= '1';
-                FIFO_din_o     <= TX_data(3);
-            when 9 =>
+                FIFO_din_o     <= TX_data(5);
+            when 15 =>
                 tx_done <= '1';
                 Clr_Hit_flag_o <= '0';
                 FIFO_wr_en_o   <= '0';

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Agilent E363X Instrument Driver Readme</title>
+</head>
+<body>
+<font face="Times New Roman" size="3">
+<h2>Agilent E363X Instrument Driver Readme</h2>
+<para>To rate this driver, go to the driver download page on the <a
+ href="http://www.ni.com/idnet">Instrument Driver Network</a>.</para>
+<h4>1. Overview</h4>
+<para>
+Instrument Driver Technology: LabVIEW Plug and Play (project-style)
+<br>
+Manufacturer: Agilent Technologies
+<br>
+Supported Language(s): LabVIEW 8.0
+<br>
+Supported Model(s): Agilent Technologies E3631A, E3632A, E3633A, E3634A
+<br>
+Model(s) Tested: Agilent Technologies E3631A, E3632A
+<br>
+Interface(s): GPIB, Serial
+<br>
+Firmware Revision Tested: 2.1-5.0-1.0
+<br>
+<br>
+Certified: Yes
+<br>
+NI Supported: Yes
+<br>
+Source Code Available: Yes
+<br>
+<br>
+Driver Revision: 3.1.1<br>
+Original Release Date: 9/20/2005
+<br>
+Current Revision Date: 07/01/2009
+</para>
+<h4>2. Required Software</h4>
+<para>Some software components need to be installed before using this
+instrument driver. The minimum versions of these components are listed
+below, and can be downloaded from the Download Site.
+<br>
+<br>
+VISA 3.0 or later
+<br>
+LabVIEW 8.0 or later
+<br>
+<br>
+<br>
+For more details, refer to the <i>LabVIEW Help</i> under <i>Help
+&raquo; VI, Function, &amp; How-To Help</i>.</para>
+<h4>3. Known Issues</h4>
+<para>
+To report issues or provide feedback about this instrument driver,
+please send an email to <a href="mailto:instrument.drivers@ni.com">instrument.drivers@ni.com</a>.</para></font>
+<br>
+<font face="Times New Roman" size="3"><para></para>
+<h4>4. Revision History</h4>
+<para>The latest version of this and other LabVIEW and LabWindows/CVI
+instrument drivers can be downloaded at the <a
+ href="http://www.ni.com/idnet">Instrument Driver Network</a>.<br>
+<br>
+REV 3.00, 9/20/05
+<br>
+</para>
+Modified by: Rob Hammond, Austin,TX.<br>
+Created new driver from hpe363xa version 2.0 to be shipped with LabVIEW
+8.0.<br>
+<br>
+REV 3.0.1 5/1/07<br>
+Modified by Nathan Tacha, Austin TX.<br>
+Changed Read Output.vi to remove a VISA write that was passing an empty
+string constant<br>
+<br>
+REV 3.0.2 11/14/08<br>
+Modified by Nathan Tacha, Austin TX.<br>
+Added a 100 ms Wait to the serial case of Initialize VI to give the instrument ample time to respond also changed Flow Control to None<br>
+<br>
+REV 3.0.3 11/19/08<br>
+Modified by Nathan Tacha, Austin TX.<br>
+Added a 100 ms Wait after the VISA Write in Reset VI when using serial and added a 500 ms wait after the VISA write in Default Instrument Setup VI when using serial<br>
+<br>
+REV 3.1 12/19/08<br>
+Modified by Nathan Tacha, Austin TX.<br>
+Changed the Serial Flow Control from a constant to a control and connected it to the connector pane in Initialize VI.  This is so the user can change the Flow Control
+to correspond to the instrument's current setting.<br>
+<br>
+REV 3.1.1 07/01/09<br>
+Modified by Alvin Tang, Austin TX.<br>
+Added time delay for serial interface in Read Output VI, Error Query VI and Examples to give the instrument enough time to respond.<br>
+<br>
+</font>
+</body>
+</html>

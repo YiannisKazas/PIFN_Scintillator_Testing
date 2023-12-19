@@ -57,7 +57,7 @@ begin
             Cnfg_readout_o.integr_dur(7 downto 0)  <= Ctrl_regs_i(6);
             Cnfg_readout_o.integr_dur(15 downto 8) <= Ctrl_regs_i(7);
             Cnfg_readout_o.edge_det_dis            <= Ctrl_regs_i(8)(0);
-            Cnfg_readout_o.mux_addr                <= Ctrl_regs_i(8)(3 downto 1);
+            Cnfg_readout_o.mux_addr                <= Ctrl_regs_i(9)(2 downto 0);--(8)(3 downto 1);
             Cnfg_readout_o.adc_addr                <= Ctrl_regs_i(9)(NUM_CHANNELS-1 downto 0);
             
             cnfg_trig_gen_o.duration     <= to_integer(unsigned(Ctrl_regs_i(10)));

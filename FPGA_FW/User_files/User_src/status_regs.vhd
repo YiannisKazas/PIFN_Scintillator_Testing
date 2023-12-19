@@ -56,10 +56,10 @@ begin
             Stat_regs_o(0) <= Stat_readout_i.fsm_status;
             -- Hardware used
             Stat_regs_o(1) <= x"03"; -- x"1" = KC705 Board, x"2" = PYNQ-Z2 Board, x"3" = Arty Board
-            -- Firmware Version 0.0.5
-            Stat_regs_o(2) <= x"05"; 
+            -- Firmware Version 0.0.1
+            Stat_regs_o(2) <= x"01"; 
             -- Project ID
-            Stat_regs_o(3) <= x"02"; -- x"1" = TDC, x"2" = RaSoLo360
+            Stat_regs_o(3) <= x"03"; -- x"1" = TDC, x"2" = RaSoLo360, x"3" = PIFN Testing
             -- Test and Debug
             Stat_regs_o(4) <= Stat_global_i.debug; 
             
