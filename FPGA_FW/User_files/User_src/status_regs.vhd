@@ -56,8 +56,8 @@ begin
             Stat_regs_o(0) <= Stat_readout_i.fsm_status;
             -- Hardware used
             Stat_regs_o(1) <= x"03"; -- x"1" = KC705 Board, x"2" = PYNQ-Z2 Board, x"3" = Arty Board
-            -- Firmware Version 0.0.1
-            Stat_regs_o(2) <= x"01"; 
+            -- Firmware Version 0.0.2
+            Stat_regs_o(2) <= x"02"; 
             -- Project ID
             Stat_regs_o(3) <= x"03"; -- x"1" = TDC, x"2" = RaSoLo360, x"3" = PIFN Testing
             -- Test and Debug
@@ -77,6 +77,9 @@ begin
             Stat_regs_o(15) <= stat_readout_i.events_recorded(23 downto 16);
 
             Stat_regs_o(16)(NUM_CHANNELS-1 downto 0) <= Stat_global_i.tx_error;
+            
+            Stat_regs_o(17) <= stat_readout_i.bram_rd_dout(7 downto 0);
+            Stat_regs_o(18) <= stat_readout_i.bram_rd_dout(15 downto 8);
         end if;
     end process;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -45,6 +45,10 @@ set_property -dict { PACKAGE_PIN H2    IOSTANDARD LVCMOS33 } [get_ports { Integr
 set_property -dict { PACKAGE_PIN G2    IOSTANDARD LVCMOS33 } [get_ports { ADC_CS_o[5] }];         #IO_L15N_T2_DQS_35 Sch=jd[10]
 
 # ChipKit Inner Digital Header
-set_property -dict { PACKAGE_PIN P18   IOSTANDARD LVCMOS33 } [get_ports { Laser_trig_o }]; #IO_L9N_T1_DQS_D13_14 Sch=ck_io[40]
-# ChipKit Outer Digital Header
-#set_property -dict { PACKAGE_PIN V15   IOSTANDARD LVCMOS33 } [get_ports { Laser_trig_o  }]; #IO_L16P_T2_CSI_B_14 Sch=ck_io[0]
+#set_property -dict { PACKAGE_PIN P18   IOSTANDARD LVCMOS33 } [get_ports { Laser_trig_o }]; #IO_L9N_T1_DQS_D13_14 Sch=ck_io[40]
+
+set_property -dict { PACKAGE_PIN U17   IOSTANDARD LVCMOS33 } [get_ports { Clr_hit_flag_dbg }]; #IO_L17P_T2_A14_D30_14 Sch=ck_io[37]
+set_property -dict { PACKAGE_PIN T18   IOSTANDARD LVCMOS33 } [get_ports { DAQ_state_dbg }]; #IO_L7N_T1_D10_14 Sch=ck_io[38]
+set_property -dict { PACKAGE_PIN R18   IOSTANDARD LVCMOS33 } [get_ports { ADC_en_dbg }]; #IO_L7P_T1_D09_14 Sch=ck_io[39]
+set_property -dict { PACKAGE_PIN P18   IOSTANDARD LVCMOS33 } [get_ports { Hit_flag_dbg }]; #IO_L9N_T1_DQS_D13_14 Sch=ck_io[40]
+set_property -dict { PACKAGE_PIN N17   IOSTANDARD LVCMOS33 } [get_ports { Laser_trig_o }]; #IO_L9P_T1_DQS_14 Sch=ck_io[41]

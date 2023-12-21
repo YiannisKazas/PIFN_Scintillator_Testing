@@ -65,6 +65,7 @@ entity PIFN_user_core is
         -- Trigger pulse for laser driver
         Laser_trig_o : out std_logic;
         -- Debug signals
+        Stat_global_o : out stat_global_type;
         Timeout_o : out std_logic
     );
 end PIFN_user_core;
@@ -119,6 +120,8 @@ architecture Behavioral of PIFN_user_core is
     signal clr_hit_flag    : std_logic := '0';
     signal hit_flag        : std_logic_vector(NUM_CHANNELS-1 downto 0) := (others => '0');
     
+    signal daq_state : std_logic;
+    
 --    type array8x3bit is array (0 to 7) of std_logic_vector(2 downto 0);
 --    constant MUX_ADDR_LUT : array8x3bit := ("
     
@@ -132,6 +135,12 @@ begin
 -- START OF MAIN BODY --
 --==================================================================================================
 
+    stat_global_o.adc_en        <= adc_en(0);
+    stat_global_o.daq_state     <= daq_state;
+    stat_global_o.hit_flag      <= hit_flag(0);
+    stat_global_o.clr_hit_flag  <= clr_hit_flag;
+    
+    
     Clk_user_o       <= Clk_system_i; 
     Reset_sys_fifo_o <= command_id.rst_sys_fifo;
     rst_usr_core     <= Reset_i or command_id.rst_usr_core;
@@ -203,10 +212,11 @@ begin
             Trigger_i         => Trigger_i,
             Cnfg_readout_i    => Cnfg_readout,
             Stat_readout_o    => stat_readout,
+            Status_fifo_full_i => Status_fifo_full_i,
             DAQ_en_o          => daq_en,
             Integrator_rst_o  => Integrator_rst_o,
             ADC_en_o          => fsm_read_adc,
-            debug_o           => open
+            debug_o           => daq_state
         );
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
@@ -223,9 +233,13 @@ begin
             DAQ_En_i       => daq_en, 
             FIFO_wr_en_o   => Status_fifo_wr_en_o,     
             FIFO_din_o     => Status_fifo_din_o, 
+            Status_fifo_full_i => Status_fifo_full_i,
             ADC_data_i     => stat_readout.ADC_data, 
             Hit_flag_i     => hit_flag, 
             Clr_hit_flag_o => Clr_Hit_flag, 
+            Rst_BRAM_i     => Command_id.bram_rst,
+            BRAM_rd_addr_i => cnfg_readout.bram_rd_addr, 
+            BRAM_rd_dout_o => stat_readout.bram_rd_dout,
             Error_o        => stat_global.tx_error 
         );
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

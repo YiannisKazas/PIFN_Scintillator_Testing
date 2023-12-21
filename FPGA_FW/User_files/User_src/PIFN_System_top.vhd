@@ -57,7 +57,12 @@ entity PIFN_System_top is
         -- MUX signals (TMUX1108)
         MUX_ADDR_o  : out std_logic_vector(2 downto 0);
         -- Trigger Pulse for laser driver
-        Laser_trig_o : out std_logic
+        Laser_trig_o : out std_logic;
+        -- DEBUGGING SIGNALS
+        Hit_flag_dbg     : out std_logic;
+        ADC_en_dbg       : out std_logic;
+        DAQ_state_dbg    : out std_logic;
+        Clr_hit_flag_dbg : out std_logic        
     );
 end PIFN_System_top;
 
@@ -120,6 +125,8 @@ architecture Behavioral of PIFN_System_top is
     
     signal timeout : std_logic;
     signal integrator_rst : std_logic;
+    
+    signal stat_global : stat_global_type;
 --==================================================================================================
 -- END of Signal Declaration
 --==================================================================================================
@@ -134,6 +141,11 @@ begin
     LED_o(1) <= Trigger_i;
     LED_o(2) <= Status_fifo_full;
     LED_o(3) <= Status_fifo_empty;
+    
+    ADC_en_dbg       <= Status_fifo_wr_en;--stat_global.adc_en;
+    Hit_flag_dbg     <= stat_global.hit_flag;
+    Clr_hit_flag_dbg <= stat_global.clr_hit_flag;
+    DAQ_state_dbg    <= Status_fifo_full;--stat_global.daq_state;
     
     Integr_rst_gen: for c in 0 to NUM_CHANNELS-1 generate
         Integrator_rst_o(c) <= integrator_rst;
@@ -251,6 +263,7 @@ begin
             -- Trigger pulse for laser driver
             Laser_trig_o => Laser_trig_o,
             -- Debug signals
+            Stat_global_o => stat_global,
             Timeout_o => timeout
         );
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

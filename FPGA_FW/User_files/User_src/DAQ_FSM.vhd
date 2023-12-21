@@ -26,6 +26,7 @@ entity DAQ_FSM is
         Trigger_i         : IN  std_logic;
         Cnfg_readout_i    : IN cnfg_readout_type;
         Stat_readout_o    : OUT stat_readout_type;
+        Status_fifo_full_i : IN std_logic;
         DAQ_En_o          : OUT  std_logic;  
         Integrator_rst_o  : OUT  std_logic;
         ADC_en_o          : OUT  std_logic;
@@ -43,7 +44,7 @@ architecture Behavioral of DAQ_FSM is
 
     type DAQ_state_type is (DAQ_IDLE,INTEGRATION_STATE);
     signal DAQ_state    : DAQ_state_type;
-    signal DAQ_cntr     : integer range 0 to 1023:= 0;
+    signal DAQ_cntr     : integer range 0 to 100_000:= 0;
     signal DAQ_rst      : std_logic:= '1'; 
     signal DAQ_en       : std_logic:= '0';
     signal event_rst    : std_logic:= '0'; 
@@ -55,7 +56,9 @@ architecture Behavioral of DAQ_FSM is
     signal state : std_logic;
     signal adc_en : std_logic;
     signal daq_en_int : std_logic;
+    signal readout_delay : natural range 0 to 100_000 := 200;
     
+    signal rst_event_nb : std_logic;
 --==================================================================================================
     -- END of Signal Declaration --
 --==================================================================================================
@@ -100,7 +103,8 @@ begin
 --==================================================================================================
     -- START OF MAIN BODY --
 --==================================================================================================
-
+    debug_o <= '0' when (DAQ_state = DAQ_IDLE) else '1';
+    
     ADC_en_o <= adc_en;
     DAQ_En_o <= daq_en;
     Stat_readout_o.events_recorded <= std_logic_vector(to_unsigned(events_recorded,24));    
@@ -116,9 +120,11 @@ begin
             daq_en <= '0';
         elsif rising_edge(Clk_i) then
             if (Command_id_i.start_rec = '1') then
+                rst_event_nb <= '0';
                 daq_en <= '1';
                 stat_readout_o.fsm_status <= x"00";
-            elsif (Command_id_i.stop_rec = '1') then
+            elsif (Command_id_i.stop_rec = '1') or (events_recorded = cnfg_readout_i.nb_events_to_record) then
+                rst_event_nb <= '1';
                 daq_en <= '0';
                 stat_readout_o.fsm_status <= x"FF";
 --            else
@@ -170,8 +176,14 @@ begin
                         event_rst <= '0';
                         DAQ_cntr  <= 0;
                         DAQ_rst   <= '1';
-                        adc_en  <= '0';
-                        if ((DAQ_en = '1') and (Trigger_i = '0') and (trigger_prev = '1')) then -- if Data acquisition is enabled AND trigger comes
+                        adc_en    <= '0';
+                        readout_delay <= to_integer(unsigned(cnfg_readout_i.delay));
+                        
+                        if (rst_event_nb = '1') then
+                            events_recorded <= 0;
+                        end if;
+                            
+                        if ((DAQ_en = '1') and (Trigger_i = '0') and (trigger_prev = '1')) and (Status_fifo_full_i = '0') then -- if Data acquisition is enabled AND trigger comes
                             DAQ_state <= INTEGRATION_STATE;            -- go to integration state 
                         else                                           -- else
                             DAQ_state <= DAQ_IDLE;                     -- remain in idle state
@@ -192,7 +204,7 @@ begin
                             event_rst <= '1';                               -- and then reset integrator
                         end if;
                         
-                        if (DAQ_cntr = integration_duration + 100)  then     -- Allow some time for correct reset of the integrator --previously 50
+                        if (DAQ_cntr = integration_duration + readout_delay) then --2000)  then --100     -- Allow some time for correct reset of the integrator --previously 50
                             DAQ_state       <= DAQ_IDLE;                    -- and then return to idle state
                             events_recorded <= events_recorded + 1;
                         else

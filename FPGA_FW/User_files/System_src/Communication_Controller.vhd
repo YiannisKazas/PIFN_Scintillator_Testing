@@ -62,7 +62,7 @@ architecture Behavioral of Communication_Controller is
 --==================================================================================================
     -- Start of Component Declaration --
 --==================================================================================================
-    -- TX Data FIFO
+    -- RX Data FIFO
     COMPONENT FIFO_8x65536
       PORT (
         rst         : IN STD_LOGIC;
@@ -74,12 +74,13 @@ architecture Behavioral of Communication_Controller is
         dout        : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
         full        : OUT STD_LOGIC;
         empty       : OUT STD_LOGIC;
+        
         wr_rst_busy : OUT STD_LOGIC;
         rd_rst_busy : OUT STD_LOGIC
       );
     END COMPONENT;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    -- RX Data FIFO
+    -- TX Data FIFO
     COMPONENT FIFO_16to8x131072
       PORT (
         rst         : IN STD_LOGIC;
@@ -91,7 +92,7 @@ architecture Behavioral of Communication_Controller is
         dout        : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
         full        : OUT STD_LOGIC;
         empty       : OUT STD_LOGIC;
-    --    prog_full   : OUT STD_LOGIC;
+        prog_full   : OUT STD_LOGIC;
         wr_rst_busy : OUT STD_LOGIC;
         rd_rst_busy : OUT STD_LOGIC
       );
@@ -186,24 +187,24 @@ architecture Behavioral of Communication_Controller is
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         -- Debugging Core --
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
---    COMPONENT Com_controller_debug
---    PORT (
---        clk : IN STD_LOGIC;
---        probe0 : IN STD_LOGIC_VECTOR(2 DOWNTO 0); 
---        probe1 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
---        probe2 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
---        probe3 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
---        probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
---        probe5 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
---        probe6 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
---        probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
---        probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
---        probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
---        probe10 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
---        probe11 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
---        probe12 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
---    );
---    END COMPONENT  ;
+    COMPONENT Com_ctrl_debug
+    PORT (
+        clk : IN STD_LOGIC;
+        probe0 : IN STD_LOGIC_VECTOR(2 DOWNTO 0); 
+        probe1 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+        probe2 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+        probe3 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+        probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+        probe5 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+        probe6 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+        probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+        probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+        probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+        probe10 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+        probe11 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+        probe12 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+    );
+    END COMPONENT  ;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     signal state             : std_logic_vector(2 downto 0):="000";
     signal fifo_words_std    : std_logic_vector(15 downto 0):=(others=>'0');
@@ -216,7 +217,7 @@ begin
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     fifo_words_std <= std_logic_vector(to_unsigned(fifo_words_rd,fifo_words_std'length));
     
---    DEBUG_Com_ctrl : Com_controller_debug
+--    DEBUG_Com_ctrl : Com_ctrl_debug
 --    PORT MAP (
 --        clk => clk_uart_i,
 --        probe0     => state, 
@@ -608,9 +609,9 @@ begin
         wr_en  => TX_fifo_wr_en_i,
         rd_en  => tx_fifo_rd_en,
         dout   => tx_fifo_dout,
-        full   =>  TX_fifo_full,--open,
+        full   =>  open,
         empty  => tx_fifo_empty,
-    --    prog_full => TX_fifo_full,
+        prog_full => TX_fifo_full,
         wr_rst_busy => open,--wr_rst_busy,
         rd_rst_busy => open--rd_rst_busy
       ); 

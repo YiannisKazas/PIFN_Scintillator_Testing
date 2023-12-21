@@ -89,6 +89,7 @@ begin
                     Command_id_o.stop_trig    <= '0';
                     Command_id_o.force_daq    <= '0';
                     Command_id_o.debug_en     <= '0';
+                    Command_id_o.bram_rst     <= '0';
                     if (Cmd_fifo_empty_i = '0') then
                         Cmd_fifo_rd_en_o     <= '1';
                         Cmd_controller_state <= Read_Cmds;
@@ -131,8 +132,12 @@ begin
                         Cmd_controller_state   <=  CMD_Idle;
                         Command_id_o.force_daq <= '1';
                     elsif (Command_id_i = START_DEBUG) then
-                        Cmd_controller_state   <=  CMD_Idle;
+                        Cmd_controller_state  <=  CMD_Idle;
                         Command_id_o.debug_en <= '1';
+                    elsif (Command_id_i = RESET_BRAM) then
+                        Cmd_controller_state  <=  CMD_Idle;
+                        Command_id_o.bram_rst <= '1';
+                        
                     else
                         Cmd_controller_state <= CMD_Idle;
                     end if;

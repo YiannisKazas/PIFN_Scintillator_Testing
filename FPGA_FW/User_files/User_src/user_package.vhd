@@ -77,6 +77,7 @@ package user_package is
     constant FORCE_TRIG       : std_logic_vector(5 downto 0):= "00" & x"6"; -- Force Data Acquisition (for debugging purposes)
     constant STOP_LASER_TRIG  : std_logic_vector(5 downto 0):= "00" & x"7"; -- Send Trigger Pulse to Laser
     constant START_DEBUG      : std_logic_vector(5 downto 0):= "00" & x"8"; -- Enable TX interface debug
+    constant RESET_BRAM       : std_logic_vector(5 downto 0):= "00" & x"9"; -- Reset BRAM memory
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     type Command_id_type is
     record
@@ -91,6 +92,7 @@ package user_package is
         stop_trig    : std_logic;
         force_daq    : std_logic;
         debug_en     : std_logic;
+        bram_rst     : std_logic;
     end record;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
@@ -133,6 +135,9 @@ package user_package is
         edge_det_dis : std_logic;
         adc_addr     : std_logic_vector(NUM_CHANNELS-1 downto 0);
         mux_addr     : std_logic_vector(2 downto 0);
+        bram_rd_addr : std_logic_vector(11 downto 0);
+        delay        : std_logic_vector(15 downto 0);
+        nb_events_to_record : natural;
     end record;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     -- Trigger Generation Parameters --
@@ -161,14 +166,19 @@ package user_package is
         adc_busy        : std_logic_vector(NUM_CHANNELS-1 downto 0);
         events_recorded : std_logic_vector(23 downto 0);
         fsm_status      : std_logic_vector(7 downto 0);
+        bram_rd_dout    : std_logic_vector(15 downto 0);
     end record;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     -- Debug and Settings  
     type stat_global_type is
     record
 --        fsm_status  : std_logic_vector(7 downto 0);
-        tx_error    : std_logic_vector(NUM_CHANNELS-1 downto 0);
-        debug       : std_logic_vector(7 downto 0);
+        tx_error     : std_logic_vector(NUM_CHANNELS-1 downto 0);
+        debug        : std_logic_vector(7 downto 0);
+        hit_flag     : std_logic;
+        clr_hit_flag : std_logic;
+        daq_state    : std_logic;
+        adc_en       : std_logic;
     end record;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
     
