@@ -21,9 +21,9 @@ use UNISIM.VComponents.all;
 entity PIFN_System_top is
     generic (
        -- System Clock = 40MHz
-       -- Baud Rate    = 500k
+       -- Baud Rate    = 5M ---//500k
        -- CLKS_PER_BIT = System_Clk(Hz) / Baud Rate
-        CLKS_PER_BIT : integer := 80  
+        CLKS_PER_BIT : integer := 8  
     );
     PORT (
         --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
@@ -126,7 +126,10 @@ architecture Behavioral of PIFN_System_top is
     signal timeout : std_logic;
     signal integrator_rst : std_logic;
     
-    signal stat_global : stat_global_type;
+    signal stat_global  : stat_global_type;
+    signal cnfg_global  : cnfg_global_type;
+    signal fifo_pkt_rdy : std_logic;
+    
 --==================================================================================================
 -- END of Signal Declaration
 --==================================================================================================
@@ -203,6 +206,8 @@ begin
             Cmd_fifo_rd_en_i   => Cmd_fifo_rd_en,
             Command_id_o       => Command_id,
             Cmd_fifo_empty_o   => Cmd_fifo_empty,
+            FIFO_pkt_rdy_o     => fifo_pkt_rdy,
+            Cnfg_global_i      => cnfg_global,
             Cmd_strobe_o       => Cmd_strobe
             );
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -242,6 +247,7 @@ begin
             Control_fifo_dout_i  => Control_fifo_dout,
             Control_fifo_empty_i => Control_fifo_empty,
             Control_fifo_rd_en_o => Control_fifo_rd_en,
+            FIFO_pkt_rdy_i       => fifo_pkt_rdy,
             ----------------------------------------
                 -- Application specific signals --
             ----------------------------------------
@@ -264,6 +270,7 @@ begin
             Laser_trig_o => Laser_trig_o,
             -- Debug signals
             Stat_global_o => stat_global,
+            Cnfg_global_o => cnfg_global,
             Timeout_o => timeout
         );
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

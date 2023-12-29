@@ -47,6 +47,8 @@ entity System_core is
         Cmd_fifo_rd_en_i   : in std_logic;
         Command_id_o       : out std_logic_vector(5 downto 0);
         Cmd_fifo_empty_o   : out std_logic;
+        FIFO_pkt_rdy_o     : out std_logic;
+        Cnfg_global_i      : in cnfg_global_type;
         Cmd_strobe_o       : out std_logic
         );
 end System_core;
@@ -121,6 +123,8 @@ Communication_Ctrl: entity work.communication_controller
         Cmd_fifo_rd_en_i     => Cmd_fifo_rd_en_i,
         Command_id_o         => Command_id_o,
         Cmd_fifo_empty_o     => Cmd_fifo_empty_o,
+        FIFO_pkt_rdy_o       => FIFO_pkt_rdy_o,
+        Cnfg_global_i        => Cnfg_global_i,
         
         Cmd_strobe_o        => Cmd_strobe_o
     );

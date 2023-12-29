@@ -3,6 +3,7 @@
 ## - uncomment the lines corresponding to used pins
 ## - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
+#set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets PIFN_usr_core/FIFO_TX_Interface/clr_hit_flag]
 
 # Pmod Header JA
 set_property -dict { PACKAGE_PIN G13   IOSTANDARD LVCMOS33 } [get_ports { ADC_CONV_o[0] }];         #IO_0_15 Sch=ja[1]

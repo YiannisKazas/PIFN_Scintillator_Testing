@@ -49,6 +49,8 @@ entity Communication_Controller is
         Cmd_fifo_rd_en_i     : in std_logic;
         Command_id_o         : out std_logic_vector(5 downto 0);
         Cmd_fifo_empty_o     : out std_logic;
+        FIFO_pkt_rdy_o       : out std_logic;
+        Cnfg_global_i        : cnfg_global_type;
         
 --        Fifo_packet_size_i   : in std_logic_vector(7 downto 0);
         Cmd_strobe_o         : out std_logic
@@ -202,14 +204,14 @@ architecture Behavioral of Communication_Controller is
         probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
         probe10 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
         probe11 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-        probe12 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+        probe12 : IN STD_LOGIC_VECTOR(11 DOWNTO 0)
     );
     END COMPONENT  ;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     signal state             : std_logic_vector(2 downto 0):="000";
     signal fifo_words_std    : std_logic_vector(15 downto 0):=(others=>'0');
     signal flag : std_logic;
-    
+    signal fifo_pkt_rdy : std_logic;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 begin
@@ -217,23 +219,23 @@ begin
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     fifo_words_std <= std_logic_vector(to_unsigned(fifo_words_rd,fifo_words_std'length));
     
---    DEBUG_Com_ctrl : Com_ctrl_debug
---    PORT MAP (
---        clk => clk_uart_i,
---        probe0     => state, 
---        probe1(0)  => flag,--fifo_rst_sync,--UART_tx_done_i, 
---        probe2     => fifo_words_std(7 downto 0),--UART_rx_data_i, 
---        probe3     => fifo_words_std(15 downto 8),--UART_tx_data_d, 
---        probe4(0)  => fifo_reset,--UART_rx_data_valid_i,
---        probe5     => TX_fifo_din_i(7 downto 0),--RX_data_array_d(wr_reg_address),
---        probe6     => tx_fifo_dout,--RX_data_array_d(0), 
---        probe7(0)  => UART_tx_active_i,--tx_fifo_dout,--RX_data_array_d(1), 
---        probe8(0)  => tx_fifo_empty,--RX_data_array_d(2), 
---        probe9(0)  => reset_fifo_i,--TX_fifo_din_i(15 downto 8),--std_logic_vector(to_unsigned(wr_reg_address,8)),
---        probe10(0) => tx_fifo_wr_en_i,
---        probe11(0) => tx_fifo_rd_en,
---        probe12(0) => tx_fifo_full 
---    );
+    DEBUG_Com_ctrl : Com_ctrl_debug
+    PORT MAP (
+        clk => clk_uart_i,
+        probe0     => state, 
+        probe1(0)  => fifo_pkt_rdy,--fifo_rst_sync,--UART_tx_done_i, 
+        probe2     => fifo_words_std(7 downto 0),--UART_rx_data_i, 
+        probe3     => fifo_words_std(15 downto 8),--UART_tx_data_d, 
+        probe4(0)  => fifo_reset,--UART_rx_data_valid_i,
+        probe5     => TX_fifo_din_i(7 downto 0),--RX_data_array_d(wr_reg_address),
+        probe6     => tx_fifo_dout,--RX_data_array_d(0), 
+        probe7(0)  => UART_tx_active_i,--tx_fifo_dout,--RX_data_array_d(1), 
+        probe8(0)  => tx_fifo_empty,--RX_data_array_d(2), 
+        probe9(0)  => reset_fifo_i,--TX_fifo_din_i(15 downto 8),--std_logic_vector(to_unsigned(wr_reg_address,8)),
+        probe10(0) => tx_fifo_wr_en_i,
+        probe11(0) => tx_fifo_full,--tx_fifo_rd_en,
+        probe12    => std_logic_vector(to_unsigned(fifo_packet_size,12)) 
+    );
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         -- END Debug Core --
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -242,6 +244,7 @@ begin
 -- Start of Main Body --
 --==================================================================================================
 
+--    FIFO_pkt_rdy_o    <= fifo_pkt_rdy;
     UART_tx_data_en_o <= UART_tx_data_en;
     UART_tx_data_o    <= UART_tx_data;
     TX_fifo_empty_o   <= tx_fifo_empty;
@@ -317,7 +320,7 @@ begin
             fifo_packet_size <= FIFO_PKT_SIZE;
         elsif rising_edge(Clk_uart_i) then
             if (control_cmd_id = SET_GLB_SETTINGS) then
-                fifo_packet_size <= to_integer(unsigned(fifo_pkt_size_pre_buf));
+                fifo_packet_size <= to_integer(unsigned(Cnfg_global_i.fifo_packet_size));
             end if;
         end if;
     end process;
@@ -339,9 +342,10 @@ begin
     controller_fsm : process(general_rst, Clk_uart_i)
     begin
         if (general_rst = '1') then
-            Controller_state <= Idle;
-            Status_reg       <= CONTROLLER_IDLE;
+            Controller_state  <= Idle;
+            Status_reg        <= CONTROLLER_IDLE;
             status_fifo_wr_en <= '1';
+            fifo_pkt_rdy      <= '0';
         elsif rising_edge(Clk_uart_i) then
             RX_data_array_o(0) <= status_reg;
             case Controller_state is
@@ -426,11 +430,14 @@ begin
                                     tx_fifo_rd_en     <= '1';
                                     fifo_words_rd     <= fifo_words_rd + 1;
                                     Controller_state  <= Wait_tx_done;
+                                    fifo_pkt_rdy      <= '0';
+
                                 else 
                                 flag <= '1';                           
                                     tx_fifo_rd_en     <= '0';
-                                    UART_tx_data_en <= '0';
+                                    UART_tx_data_en   <= '0';
                                     Controller_state  <= Idle;
+                                    fifo_pkt_rdy    <= '1';
                                     status_reg        <= READ_COMPLETED;
                                     status_fifo_wr_en <= '1';
                                 end if;
@@ -609,9 +616,9 @@ begin
         wr_en  => TX_fifo_wr_en_i,
         rd_en  => tx_fifo_rd_en,
         dout   => tx_fifo_dout,
-        full   =>  open,
+        full   =>  TX_fifo_full,
         empty  => tx_fifo_empty,
-        prog_full => TX_fifo_full,
+        prog_full => fifo_pkt_rdy_o,
         wr_rst_busy => open,--wr_rst_busy,
         rd_rst_busy => open--rd_rst_busy
       ); 

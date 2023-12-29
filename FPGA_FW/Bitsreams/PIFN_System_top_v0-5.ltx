@@ -1,0 +1,589 @@
+{
+    "ltx_root": {
+        "version": 4,
+        "minor": 0,
+        "ltx_data": [
+            {
+                "name": "EDA_PROBESET",
+                "active": true,
+                "debug_cores": [
+                    {
+                        "type": "XSDB_V3",
+                        "name": "dbg_hub",
+                        "spec": "labtools_xsdbm_v3",
+                        "clk_input_freq_hz": "39999996"
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "PIFN_usr_core/DAQ_Sequence/DEBUG_DAQ_FSM",
+                        "spec": "labtools_ila_v6",
+                        "ipName": "ila",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 0,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "4DC0FB84719754929FED3C45870B2FB3",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 0,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "PIFN_usr_core/DAQ_Sequence/rst_event_nb",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 1,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "PIFN_usr_core/DAQ_Sequence/state",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 2,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "PIFN_usr_core/DAQ_Sequence/adc_en",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 3,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "PIFN_usr_core/DAQ_Sequence/Command_id_i[start_rec]",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 4,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "PIFN_usr_core/DAQ_Sequence/DAQ_en",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 5,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "PIFN_usr_core/DAQ_Sequence/Command_id_i[stop_rec]",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 6,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded]",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded][7]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded][6]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded][5]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded][4]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded][3]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded][2]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded][1]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Stat_readout_o[events_recorded][0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 7,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record]",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record][7]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record][6]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record][5]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record][4]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record][3]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record][2]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record][1]"
+                                            },
+                                            {
+                                                "name": "PIFN_usr_core/DAQ_Sequence/Cnfg_readout_i[nb_events_to_record][0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "Sys_core/Communication_Ctrl/DEBUG_Com_ctrl",
+                        "spec": "labtools_ila_v6",
+                        "ipName": "ila",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 1,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "F374FEADE58757D7BDB30F07C71A1A2E",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 8,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 2,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/state",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/state[2]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/state[1]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/state[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 9,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/fifo_pkt_rdy",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 10,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/fifo_words_std_1",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std_1[7]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std_1[6]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std_1[5]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std_1[4]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std_1[3]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std_1[2]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std_1[1]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std_1[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 11,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/fifo_words_std",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std[15]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std[14]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std[13]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std[12]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std[11]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std[10]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std[9]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_words_std[8]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 12,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/fifo_reset",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 13,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i[7]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i[6]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i[5]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i[4]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i[3]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i[2]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i[1]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/TX_fifo_din_i[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 14,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/tx_fifo_dout",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/tx_fifo_dout[7]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/tx_fifo_dout[6]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/tx_fifo_dout[5]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/tx_fifo_dout[4]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/tx_fifo_dout[3]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/tx_fifo_dout[2]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/tx_fifo_dout[1]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/tx_fifo_dout[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 15,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/UART_tx_active_i",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 16,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 8,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/tx_fifo_empty",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 17,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/Reset_fifo_i",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 18,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/TX_fifo_wr_en_i",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 19,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/tx_fifo_full",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 20,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 11,
+                                "portIndex": 12,
+                                "nets": [
+                                    {
+                                        "name": "Sys_core/Communication_Ctrl/fifo_packet_size",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[11]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[10]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[9]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[8]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[7]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[6]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[5]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[4]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[3]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[2]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[1]"
+                                            },
+                                            {
+                                                "name": "Sys_core/Communication_Ctrl/fifo_packet_size[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

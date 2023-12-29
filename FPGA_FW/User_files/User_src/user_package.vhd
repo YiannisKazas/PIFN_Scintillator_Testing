@@ -167,6 +167,7 @@ package user_package is
         events_recorded : std_logic_vector(23 downto 0);
         fsm_status      : std_logic_vector(7 downto 0);
         bram_rd_dout    : std_logic_vector(15 downto 0);
+        data_rdy        : std_logic;
     end record;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     -- Debug and Settings  

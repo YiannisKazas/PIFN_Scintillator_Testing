@@ -58,7 +58,7 @@ architecture Behavioral of DAQ_FSM is
     signal daq_en_int : std_logic;
     signal readout_delay : natural range 0 to 100_000 := 200;
     
-    signal rst_event_nb : std_logic;
+    signal rst_event_nb : std_logic:='0';
 --==================================================================================================
     -- END of Signal Declaration --
 --==================================================================================================
@@ -85,18 +85,18 @@ architecture Behavioral of DAQ_FSM is
 begin
 
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
---    DEBUG_DAQ_FSM : DAQ_FSM_DEBUG
---    PORT MAP (
---        clk => clk_i,
---        probe0(0) => debug, 
---        probe1(0) => state, 
---        probe2(0) => adc_en,--trigger_i, 
---        probe3(0) => daq_en_int, 
---        probe4(0) => daq_en, 
---        probe5(0) => event_rst,--trigger_prev, 
---        probe6    => std_logic_vector(to_unsigned(daq_cntr,8)),
---        probe7    => cnfg_readout_i.integr_dur(7 downto 0)
---    );
+    DEBUG_DAQ_FSM : DAQ_FSM_DEBUG
+    PORT MAP (
+        clk => clk_i,
+        probe0(0) => rst_event_nb, 
+        probe1(0) => state, 
+        probe2(0) => adc_en,--trigger_i, 
+        probe3(0) => Command_id_i.start_rec, 
+        probe4(0) => daq_en, 
+        probe5(0) => Command_id_i.stop_rec,--trigger_prev, 
+        probe6    => std_logic_vector(to_unsigned(events_recorded,8)),
+        probe7    => std_logic_vector(to_unsigned(cnfg_readout_i.nb_events_to_record,8))
+    );
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
@@ -109,6 +109,7 @@ begin
     DAQ_En_o <= daq_en;
     Stat_readout_o.events_recorded <= std_logic_vector(to_unsigned(events_recorded,24));    
     integration_duration <= to_integer(unsigned(cnfg_readout_i.integr_dur));
+    Stat_readout_o.data_rdy <= rst_event_nb;
     
     
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,7 +124,7 @@ begin
                 rst_event_nb <= '0';
                 daq_en <= '1';
                 stat_readout_o.fsm_status <= x"00";
-            elsif (Command_id_i.stop_rec = '1') or (events_recorded = cnfg_readout_i.nb_events_to_record) then
+            elsif (Command_id_i.stop_rec = '1') then --or (events_recorded = cnfg_readout_i.nb_events_to_record) then
                 rst_event_nb <= '1';
                 daq_en <= '0';
                 stat_readout_o.fsm_status <= x"FF";
@@ -142,10 +143,10 @@ begin
     begin
         if (DAQ_en = '1') then
             Integrator_rst_o <= (DAQ_rst and (Trigger_i or (not trigger_prev))) or (event_rst); -- Trigger_i = active low ('0' when trigger, '1' when idle)
-            debug            <= (DAQ_rst and (Trigger_i or (not trigger_prev))) or (event_rst);
+--            debug            <= (DAQ_rst and (Trigger_i or (not trigger_prev))) or (event_rst);
         else
             Integrator_rst_o <= '1';
-            debug            <= '1';
+--            debug            <= '1';
         end if;
     end process;
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,34 +163,33 @@ begin
                 DAQ_state       <= DAQ_IDLE;
             else        
                 
-                if (command_id_i.force_daq = '1') then
-                    daq_en_int <= '1';
-                elsif (event_rst = '1') then
-                    daq_en_int <= '0';
-                end if;
-                
                 trigger_prev <= Trigger_i or cnfg_readout_i.edge_det_dis;
                 case DAQ_state is
-                
-                    when DAQ_IDLE =>         ---- DAQ_IDLE, waiting for trigger
+                    --------------
+                    -- DAQ IDLE --
+                    --------------
+                    when DAQ_IDLE => 
                     state <= '0';
+                    debug <= '0';
                         event_rst <= '0';
                         DAQ_cntr  <= 0;
                         DAQ_rst   <= '1';
                         adc_en    <= '0';
                         readout_delay <= to_integer(unsigned(cnfg_readout_i.delay));
-                        
+                        -- 
                         if (rst_event_nb = '1') then
                             events_recorded <= 0;
                         end if;
-                            
-                        if ((DAQ_en = '1') and (Trigger_i = '0') and (trigger_prev = '1')) and (Status_fifo_full_i = '0') then -- if Data acquisition is enabled AND trigger comes
+                        -- if Data acquisition is enabled AND trigger comes    
+                        if ((DAQ_en = '1') and (Trigger_i = '0') and (trigger_prev = '1')) and (Status_fifo_full_i = '0') then 
                             DAQ_state <= INTEGRATION_STATE;            -- go to integration state 
                         else                                           -- else
                             DAQ_state <= DAQ_IDLE;                     -- remain in idle state
                         end if;
-                    
-                    when INTEGRATION_STATE => ---- INTEGRATION_STATE
+                    -----------------------
+                    -- INTEGRATION STATE --
+                    -----------------------
+                    when INTEGRATION_STATE => 
                     state <= '1';
                         DAQ_cntr <= DAQ_cntr +1;                            -- start DAQ_cntr
                         DAQ_rst  <= '0';                                    -- integrator circuit is in operation (out of Reset_i state)
@@ -205,8 +205,8 @@ begin
                         end if;
                         
                         if (DAQ_cntr = integration_duration + readout_delay) then --2000)  then --100     -- Allow some time for correct reset of the integrator --previously 50
-                            DAQ_state       <= DAQ_IDLE;                    -- and then return to idle state
                             events_recorded <= events_recorded + 1;
+                            DAQ_state       <= DAQ_IDLE;                    -- and then return to idle state
                         else
                             DAQ_state <= INTEGRATION_STATE; 
                         end if;

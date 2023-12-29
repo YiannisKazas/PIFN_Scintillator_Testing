@@ -43,6 +43,7 @@ entity PIFN_user_core is
         Control_fifo_dout_i  : in std_logic_vector(7 downto 0);
         Control_fifo_empty_i : in std_logic;
         Control_fifo_rd_en_o : out std_logic;
+        FIFO_pkt_rdy_i       : in std_logic;
         
         --------------------------------
             -- User Core Signals --          
@@ -66,6 +67,7 @@ entity PIFN_user_core is
         Laser_trig_o : out std_logic;
         -- Debug signals
         Stat_global_o : out stat_global_type;
+        Cnfg_global_o : out cnfg_global_type;
         Timeout_o : out std_logic
     );
 end PIFN_user_core;
@@ -140,17 +142,19 @@ begin
     stat_global_o.hit_flag      <= hit_flag(0);
     stat_global_o.clr_hit_flag  <= clr_hit_flag;
     
+    Cnfg_global_o <= cnfg_global;
+    
     
     Clk_user_o       <= Clk_system_i; 
     Reset_sys_fifo_o <= command_id.rst_sys_fifo;
     rst_usr_core     <= Reset_i or command_id.rst_usr_core;
     
     ADC_SCLK_o <= adc_sclk(0);
-    MUX_ADDR_o <= "110" when Cnfg_readout.mux_addr = "101" else -- Select MUX input 0 (SiPM_5)
-                  "101" when Cnfg_readout.mux_addr = "100" else -- Select MUX input 1 (SiPM_4)
-                  "100" when Cnfg_readout.mux_addr = "011" else -- Select MUX input 2 (SiPM_3)
+    MUX_ADDR_o <= "000" when Cnfg_readout.mux_addr = "101" else -- Select MUX input 0 (SiPM_5)
+                  "001" when Cnfg_readout.mux_addr = "100" else -- Select MUX input 1 (SiPM_4)
+                  "010" when Cnfg_readout.mux_addr = "011" else -- Select MUX input 2 (SiPM_3)
                   "011" when Cnfg_readout.mux_addr = "010" else -- Select MUX Input 3 (SiPM_2)
-                  "101" when Cnfg_readout.mux_addr = "001" else -- Select MUX input 6 (SiPM 1)
+                  "110" when Cnfg_readout.mux_addr = "001" else -- Select MUX input 6 (SiPM 1)
                   "111";                                        -- Select MUX Input 7 (SiPM 0)
 
     --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -193,6 +197,7 @@ begin
         port map (
             Reset_i         => rst_usr_core,
             Clk_i           => Clk_system_i,
+            FIFO_pkt_rdy_i  => FIFO_pkt_rdy_i,--Control_register_i(0)(0),
             Stat_global_i   => stat_global,
             stat_readout_i  => stat_readout,
             Stat_regs_o     => Status_register_o
