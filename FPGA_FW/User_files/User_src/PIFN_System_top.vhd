@@ -145,10 +145,10 @@ begin
     LED_o(2) <= Status_fifo_full;
     LED_o(3) <= Status_fifo_empty;
     
-    ADC_en_dbg       <= Status_fifo_wr_en;--stat_global.adc_en;
+    ADC_en_dbg       <= stat_global.adc_en;
     Hit_flag_dbg     <= stat_global.hit_flag;
     Clr_hit_flag_dbg <= stat_global.clr_hit_flag;
-    DAQ_state_dbg    <= Status_fifo_full;--stat_global.daq_state;
+    DAQ_state_dbg    <= Trigger_i;--Status_fifo_full;--stat_global.daq_state;
     
     Integr_rst_gen: for c in 0 to NUM_CHANNELS-1 generate
         Integrator_rst_o(c) <= integrator_rst;

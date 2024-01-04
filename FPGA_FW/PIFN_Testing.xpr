@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="44" Path="D:/cernbox/PhD/PIFN/Program_files/PIFN_Scintillator_Testing/FPGA_FW/PIFN_Testing.xpr">
+<Project Version="7" Minor="44" Path="C:/Users/Yiannis/cernbox/PhD/PIFN/Program_files/PIFN_Scintillator_Testing/FPGA_FW/PIFN_Testing.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="a668bf4a849144e0a8a22122df4a0cdd"/>
